@@ -31,6 +31,8 @@ def project(request, pk):
             review.project = project
             review.save()
 
+            project.getVoteCount
+
             messages.success(request, 'Review created!')
 
             return redirect('project', project.id)

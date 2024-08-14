@@ -4,17 +4,32 @@ from django.dispatch import receiver
 from django.contrib.auth.models import User
 from .models import Profile
 
+from django.core.mail import send_mail
+from django.conf import settings
+
 def createProfile(sender, instance, created, **kwargs):
     if created:
         user = instance
-        Profile.objects.create(
+        profile = Profile.objects.create(
             user=user,
             username=user.username,
-            name=user.first_name
+            name=user.first_name,
+            email=user.email
         )
         print('Profile was created')
-        return
-    print('profile aint created')
+    else:
+        print('profile aint created')
+
+    subject = 'Welcome to DevSearch'
+    body = 'Welcome aboard sailor, howdy?'
+
+    send_mail(
+        subject,
+        body,
+        settings.EMAIL_HOST_USER,
+        [profile.email],
+        fail_silently=False
+    )
 
 def deleteUser(sender, instance, **kwargs):
     user = instance.user
