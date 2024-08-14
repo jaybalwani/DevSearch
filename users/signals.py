@@ -16,20 +16,22 @@ def createProfile(sender, instance, created, **kwargs):
             name=user.first_name,
             email=user.email
         )
-        print('Profile was created')
+        
+        subject = 'Welcome to DevSearch'
+        body = 'Welcome aboard sailor, howdy?'
+        
+        send_mail(
+            subject,
+            body,
+            settings.EMAIL_HOST_USER,
+            [user.email],
+            fail_silently=False
+        )
+
     else:
         print('profile aint created')
 
-    subject = 'Welcome to DevSearch'
-    body = 'Welcome aboard sailor, howdy?'
 
-    send_mail(
-        subject,
-        body,
-        settings.EMAIL_HOST_USER,
-        [profile.email],
-        fail_silently=False
-    )
 
 def deleteUser(sender, instance, **kwargs):
     user = instance.user
